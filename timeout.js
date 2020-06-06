@@ -1,24 +1,20 @@
 var http = require('http'); // 1 - Import Node.js core module
+var url = require('url');
 
 var server = http.createServer(function (req, res) {   // 2 - creating server
 
-    //handle incomming requests here..
-    if (req.url == '/') { //check the URL of the current request
+    var timeoutParam = url.parse(req.url, true).query['setTimeout'];
 
       setTimeout(function(){
         // set response header
         res.writeHead(200, { 'Content-Type': 'text/html' });
         // set response content
-        res.write('<html><body><p>This is home Page.</p></body></html>');
+        res.write(`Success with timeout interval ${timeoutParam}`);
         res.end();
-      }, 120000)
-
-   }
-   else
-      res.end('Invalid Request!');
+      }, timeoutParam)
 
 });
 
-server.listen(process.env.PORT || 5000); //3 - listen for any incoming requests
+server.listen(process.env.PORT || 5000);
 
-console.log('Node.js web server at port 5000 is running..')
+console.log(`Node.js web server at port ${process.env.PORT || 5000} is running..`)
